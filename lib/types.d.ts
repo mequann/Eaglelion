@@ -18,15 +18,15 @@ export interface Session {
 }
 
 
-export interface ExtendedSession extends Session {
-  user: {
-    id?: string | null;
-    accessToken?: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-  };
-}
+// export interface ExtendedSession extends Session {
+//   user: {
+//     id?: string | null;
+//     accessToken?: string;
+//     name?: string | null;
+//     email?: string | null;
+//     image?: string | null;
+//   };
+// }
 
 
 export interface ExtendedJWT extends JWT {

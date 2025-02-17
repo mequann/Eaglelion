@@ -6,20 +6,18 @@ import { Session, User } from "@/lib/types";
 
 // Extend Session and JWT types
 export interface ExtendedSession extends DefaultSession {
-  user: {
-    id?: string; 
-    accessToken?: string; 
-    name?: string | null; 
-    email?: string | null; 
-    image?: string | null; 
+  user: DefaultSession["user"] & {
+    id?: string;
+    accessToken?: string;
   };
 }
 
 export interface ExtendedJWT extends JWT {
-  id?: string; 
-  accessToken?: string; 
+  id?: string;
+  accessToken?: string;
 }
-export const authOptions: AuthOptions = {
+
+export const authOptions:any = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -74,7 +72,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   session: {
-    strategy: "jwt" as const, // Use JWT for session strategy
+    strategy: "jwt" as const,
   },
   callbacks: {
     jwt: async ({
@@ -93,33 +91,31 @@ export const authOptions: AuthOptions = {
       isNewUser?: boolean;
     }) => {
       if (user) {
-        token.id = user.id; 
-        token.accessToken = user.token || ""; 
+        token.id = user.id;
+        token.accessToken = user.token || "";
       }
 
       if (account && isNewUser) {
         console.log("New user signed up with account:", account);
       }
 
-      return token; 
+      return token; // Return the token
     },
 
-   
-   //@ts-ignore
     session: async ({
       session,
       token,
-      user,
     }: {
-      session: Session;
+      session: any;
       token: JWT;
-      user?: any;
-    }): Promise<Session> => {
+    }): Promise<any> => {
       if (session.user && token) {
-        session.user.id = token.id as string; 
-        session.user.accessToken = token.accessToken as string; 
+        // console.log(session, "session");
+        session.user.id = token.id as string;
+        session.user.accessToken = token.accessToken as string;
       }
-      return session; 
+
+      return session;
     },
   },
 };
