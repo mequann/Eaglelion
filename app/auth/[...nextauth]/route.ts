@@ -1,8 +1,9 @@
-import NextAuth, { AuthOptions, DefaultSession } from "next-auth";
+import NextAuth, { AuthOptions, DefaultSession,NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
 import { requestOTP, verifyOTP, loginWithPassword } from "@/lib/api";
 import { Session, User } from "@/lib/types";
+import { NextApiHandler } from "next";
 
 // Extend Session and JWT types
 export interface ExtendedSession extends DefaultSession {
@@ -17,7 +18,7 @@ export interface ExtendedJWT extends JWT {
   accessToken?: string;
 }
 
-export const authOptions:any = {
+const authOptions:NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -120,5 +121,14 @@ export const authOptions:any = {
   },
 };
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+// const handler = NextAuth(authOptions);
+// const handler = (req: any, res: any) => NextAuth(req, res, authOptions);
+// export { handler as GET, handler as POST };
+// Define GET and POST handlers explicitly
+export async function GET(request: Request) {
+  return NextAuth(authOptions);
+}
+
+export async function POST(request: Request) {
+  return NextAuth(authOptions);
+}
